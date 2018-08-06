@@ -13,10 +13,12 @@ import { AppState } from "./state"
 import { BootProps } from "./types"
 
 // TODO: Do we want to let Force explicitly inject the analytics code?
-@track(null, { dispatch: data => Events.postEvent(data) })
+@track(null, {
+  dispatch: data => Events.postEvent(data),
+})
 export class Boot extends React.Component<BootProps> {
   static defaultProps = {
-    initialBreakpoint: null,
+    initialMatchingMediaQueries: null,
     relayEnvironment: null,
     currentUser: null,
   }
@@ -25,6 +27,15 @@ export class Boot extends React.Component<BootProps> {
     const { children, ...props } = this.props
     const appState = new AppState(props)
 
+    if (
+      props.initialMatchingMediaQueries &&
+      props.initialMatchingMediaQueries.includes("xs")
+    ) {
+      // FIXME: Initial padding is set in @artsy/palette -- we should consider
+      // moving here.
+      themeProps.grid.container.padding = 20
+    }
+
     return (
       <StateProvider inject={[appState]}>
         <ContextProvider
@@ -32,8 +43,8 @@ export class Boot extends React.Component<BootProps> {
           currentUser={props.currentUser}
         >
           <ResponsiveProvider
-            initialBreakpoint={props.initialBreakpoint}
-            breakpoints={themeProps.mediaQueries}
+            mediaQueries={themeProps.mediaQueries}
+            initialMatchingMediaQueries={props.initialMatchingMediaQueries}
           >
             <GlobalStyles>
               <Theme>

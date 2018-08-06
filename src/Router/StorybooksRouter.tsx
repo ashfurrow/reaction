@@ -1,10 +1,15 @@
+import { IMocks } from "graphql-tools/dist/Interfaces"
 import React from "react"
+import { createMockNetworkLayer } from "Relay/createMockNetworkLayer"
 import { buildClientApp } from "Router"
+import { MatchingMediaQueries } from "./types"
 
 interface Props {
   routes: Array<object>
+  initialMatchingMediaQueries?: MatchingMediaQueries
   initialRoute?: string
   initialState?: object
+  mockResolvers?: IMocks
 }
 
 export class StorybooksRouter extends React.Component<Props> {
@@ -22,6 +27,10 @@ export class StorybooksRouter extends React.Component<Props> {
         routes: this.props.routes,
         historyProtocol: "memory",
         initialRoute: this.props.initialRoute,
+        initialMatchingMediaQueries: this.props.initialMatchingMediaQueries,
+        relayNetwork:
+          this.props.mockResolvers &&
+          createMockNetworkLayer(this.props.mockResolvers),
       })
 
       this.setState({
