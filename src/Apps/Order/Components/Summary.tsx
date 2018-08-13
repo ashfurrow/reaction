@@ -1,7 +1,7 @@
 import { Sans } from "@artsy/palette"
 import React, { Component } from "react"
 import { Spacer } from "Styleguide/Elements/Spacer"
-import { Placeholder } from "Styleguide/Utils/Placeholder"
+import { TransactionSummary } from "./TransactionSummary"
 
 import styled from "styled-components"
 
@@ -17,7 +17,7 @@ export class Summary extends Component<SummaryProps> {
   render() {
     return (
       <>
-        <Placeholder height="390px" name="Sidebar" />
+        <TransactionSummary />
         {this.props.children}
         <Helper mediator={this.props.mediator} />
       </>
